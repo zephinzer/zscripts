@@ -1,0 +1,19 @@
+{
+  "name": "zscripts",
+  "bin": {
+    "zsc": "./src/zsc.js",
+    "zsc-up": "./src/zsc-up.js"
+  },
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/zsc.js",
+  "scripts": {
+    "start": "node ./src/zsc.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.15.1"
+  }
+}

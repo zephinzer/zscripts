@@ -1,0 +1,50 @@
+#!/bin/sh
+CURRDIR="$(dirname $0)";
+COMMAND_EXISTS="${CURRDIR}/../utils/command-exists";
+CLEAR_DATA_VOLUME="${CURRDIR}/../utils/clear-data-volume";
+if [ "$(${COMMAND_EXISTS} docker)" != "1" ]; then
+  printf -- 'docker is not installed.\n';
+  exit 1;
+fi;
+
+CURRENT_TIMESTAMP="$(date +'%Y%M%d_%H%m%S')";
+SVC_VERSION='5.7.22';
+SVC_VERSION_UNDERSCORED="$(printf -- "${SVC_VERSION}" | sed -e 's|\.|_|g')";
+CONTAINER_NAME="mysql_${SVC_VERSION_UNDERSCORED}_${CURRENT_TIMESTAMP}";
+DATA_VOLUME_PATH="${HOME}/.zscripts/data/${CONTAINER_NAME}";
+SVC_PORT=3306;
+
+mkdir -p "${DATA_VOLUME_PATH}";
+
+printf -- '-----------------------------\n';
+printf -- ' __  ____   _____  ___  _    \n';
+printf -- '|  \/  \ \ / / __|/ _ \| |   \n';
+printf -- '| |\/| |\ V /\__ \ (_) | |__ \n';
+printf -- '|_|  |_| |_| |___/\__\_\____|\n';
+printf -- '                             \n';
+printf -- '-----------------------------\n';
+
+USERNAME="$1";
+if [ "${USERNAME}" = '' ]; then USERNAME='username'; fi;
+PASSWORD="$2";
+if [ "${PASSWORD}" = '' ]; then PASSWORD='password'; fi;
+HOST_PORT="$3";
+if [ "${HOST_PORT}" = "" ]; then HOST_PORT=${SVC_PORT}; fi;
+
+printf -- "USERNAME:         ${USERNAME}\n";
+printf -- "PASSWORD:         ${PASSWORD}\n";
+printf -- "HOST_PORT:        ${HOST_PORT}\n";
+printf -- "DATA_VOLUME_PATH: ${DATA_VOLUME_PATH}\n";
+printf -- '-----------------------------\n';
+
+docker run \
+  --publish "${HOST_PORT}:${SVC_PORT}" \
+  --name "${CONTAINER_NAME}" \
+  --volume "${DATA_VOLUME_PATH}:/var/lib/mysql" \
+  --env "MYSQL_USER=${USERNAME}" \
+  --env "MYSQL_PASSWORD=${PASSWORD}" \
+  --env "MYSQL_ROOT_PASSWORD=${PASSWORD}" \
+  mysql:"${SVC_VERSION}" \
+;
+
+${CLEAR_DATA_VOLUME} "${DATA_VOLUME_PATH}";
