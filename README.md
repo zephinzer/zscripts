@@ -20,7 +20,26 @@ zsc [command] [options]
 ```
 
 ## Commands
+- [`npm`](#npm-command)
 - [`up`](#up-command)
+
+### Npm Command
+
+#### Version
+
+```sh
+zsc npm version|v [...options]
+```
+
+##### Options
+
+`-p, --patch`: Updates the patch version
+
+`-m, --minor`: Updates the minor version
+
+`-M, --major`: Updates the major version
+
+> If no options are specified, defaults to patch.
 
 ### Up Command
 #### MySQL
