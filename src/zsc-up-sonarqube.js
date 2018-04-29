@@ -4,15 +4,17 @@ const {spawn} = require('child_process');
 const path = require('path');
 
 commander
-  .name('zsc-up-redis')
-  .description('provisions a redis instance using docker')
-  .option('-P, --host-port [host-port]', 'specifies the host port to map redis to');
+  .name('zsc-up-sonarqube')
+  .description('provisions a sonarqube instance using docker')
+  .option('-Pui, --host-port-ui [host-port-ui]', 'specifies the host port for the sonarqube user interface')
+  .option('-Psv, --host-port-server [host-port-server]', 'specifies the host port for the sonarqube server');
 
 commander.parse(process.argv);
 
-const commandString = `${path.join(__dirname, '../services/redis')}`;
+const commandString = `${path.join(__dirname, '../services/sonarqube')}`;
 const commandArgs = [
-  commander.hostPort || '',
+  commander.hostPortUi || '',
+  commander.hostPortServer || '',
 ];
 
 const childProc = spawn(commandString, commandArgs, {detached: true});
@@ -26,5 +28,5 @@ childProc.stderr.on('data', (data) => {
   process.stderr.write(data);
 });
 childProc.on('exit', (exitCode) => {
-  console.info(`redis exited with code ${exitCode || '0'}.`);
+  console.info(`sonarqube exited with code ${exitCode || '0'}.`);
 });

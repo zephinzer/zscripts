@@ -46,3 +46,15 @@ zsc up redis [...options]
 ##### Options
 
 `-P, --host-port`: Specifies the port which will be host can expect to find the Redis instance. Defaults to `6379`.
+
+#### Sonarqube
+
+```sh
+zsc up sonarqube [...options]
+```
+
+##### Options
+
+`-Pui, --host-port-ui`: Specifies the port which will be host can expect to find the Sonarqube UI. Defaults to `9000`.
+
+`-Psv, --host-port-server`: Specifies the port which will be host can expect to find the Sonarqube server. Defaults to `9092`.
