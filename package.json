@@ -4,7 +4,7 @@
     "zsc": "./src/zsc.js",
     "zsc-up": "./src/zsc-up.js"
   },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "./src/zsc.js",
   "scripts": {

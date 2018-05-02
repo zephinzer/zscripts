@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const commander = require('commander');
-const {exec} = require('child_process');
+const fs = require('fs');
 const path = require('path');
 
 commander
@@ -10,4 +10,22 @@ commander
   .command('redis', 'starts a redis instance')
   .command('sonarqube', 'starts a sonarqube instance')
   .command('prometheus', 'starts a prometheus instance')
-  .parse(process.argv);
+  .action((x, y) => {
+    try {
+      fs.mkdirSync(path.join(`${process.env['HOME']}`, '/.zscripts'));
+    } catch (ex) {
+      switch (ex.code) {
+        case 'EEXIST': break;
+        default: console.error(ex.code);
+      }
+    }
+    try {
+      fs.mkdirSync(path.join(`${process.env['HOME']}`, '/.zscripts/data'));
+    } catch (ex) {
+      switch (ex.code) {
+        case 'EEXIST': break;
+        default: console.error(ex.code);
+      }
+    }
+  })
+  .parse(process.argv)
