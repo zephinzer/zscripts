@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const {kebab, snake} = require('case');
-const inquirer = require('inquirer');
 const yaml = require('yamljs');
 
 const DockerCommand = require('./docker-command');
