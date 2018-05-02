@@ -56,6 +56,18 @@ zsc up mysql [...options]
 
 `-P, --host-port`: Specifies the port which will be host can expect to find the MySQL instance. Defaults to `3306`
 
+#### Prometheus
+
+```sh
+zsc up prometheus [...options]
+```
+
+##### Options
+
+`-P, --host-port`: Specifies the port which will be host can expect to find the Prometheus instance. Defaults to `9090`.
+
+`-c, --config-file-path`: Specifies a local absolute path to a configuration file for Prometheus to use. Defaults to `null` which means the Prometheus image uses the default file at `/etc/prometheus/prometheus.yml`
+
 #### Redis
 
 ```sh
@@ -76,4 +88,4 @@ zsc up sonarqube [...options]
 
 `-Pui, --host-port-ui`: Specifies the port which will be host can expect to find the Sonarqube UI. Defaults to `9000`.
 
-`-Psv, --host-port-server`: Specifies the port which will be host can expect to find the Sonarqube server. Defaults to `9092`.
+`-Pdb, --host-port-db`: Specifies the port which will be host can expect to find the Sonarqube database. Defaults to `9092`.

@@ -1,0 +1,5 @@
+port:
+  ui: 9000
+  db: 9092
+image: sonarqube
+tag: 7.1-alpine

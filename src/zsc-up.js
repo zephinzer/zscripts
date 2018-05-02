@@ -9,4 +9,5 @@ commander
   .command('mysql', 'starts a mysql instance')
   .command('redis', 'starts a redis instance')
   .command('sonarqube', 'starts a sonarqube instance')
+  .command('prometheus', 'starts a prometheus instance')
   .parse(process.argv);
