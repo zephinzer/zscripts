@@ -2,9 +2,11 @@
   "name": "zscripts",
   "bin": {
     "zsc": "./src/zsc.js",
-    "zsc-up": "./src/zsc-up.js"
+    "zsc-up": "./src/zsc-up.js",
+    "zsc-npm": "./src/zsc-npm.js",
+    "zsc-version": "./src/zsc-version.js"
   },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "./src/zsc.js",
   "scripts": {
