@@ -9,9 +9,9 @@ const {service, DEFAULT_CONTAINER_NAME, DEFAULT_USER_ID} = utils.getServiceConfi
 commander
   .name('zsc-up-mysql')
   .description('provisions a mysql instance using docker')
-  .option('-P, --host-port [host-port]',  'specifies the host port for accessing mysql', service.port)
   .option('-u, --username [username]',    'specifies the username for the mysql instance', 'username')
   .option('-p, --password [password]',    'specifies the password for both root and the user specified in username', 'password')
+  .option('-P, --host-port [host-port]',  'specifies the host port for accessing mysql', service.port)
   .option('-l, --link [existing:in-app]', 'links containers to container being spun up', (c, x) => x.concat(c), [])
   .option('-n, --name [name]',            `specifies the name of the container`, DEFAULT_CONTAINER_NAME)
   .option('-U, --user-id [user-id]',      `specifies the user ID for the mysql instance`, DEFAULT_USER_ID)

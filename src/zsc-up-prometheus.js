@@ -9,11 +9,11 @@ const {service, DEFAULT_CONTAINER_NAME, DEFAULT_USER_ID} = utils.getServiceConfi
 commander
   .name('zsc-up-prometheus')
   .description('provisions a prometheus instance using docker')
-  .option('-P, --host-port [host-port]',  'specifies the host port for accessing prometheus', service.port)
   .option('-c, --config-file-path [config-file-path]', 'specifies the absolute location of the config file')
-  .option('-l, --link [existing:in-app]', 'links containers to container being spun up', (c, x) => x.concat(c), [])
-  .option('-n, --name [name]',            `specifies the name of the container`, DEFAULT_CONTAINER_NAME)
-  .option('-U, --user-id [user-id]',      `specifies the user ID for the prometheus instance`, DEFAULT_USER_ID)
+  .option('-P, --host-port [host-port]',               'specifies the host port for accessing prometheus', service.port)
+  .option('-l, --link [existing:in-app]',              'links containers to container being spun up', (c, x) => x.concat(c), [])
+  .option('-n, --name [name]',                         'specifies the name of the container', DEFAULT_CONTAINER_NAME)
+  .option('-U, --user-id [user-id]',                   'specifies the user ID for the prometheus instance', DEFAULT_USER_ID)
   .parse(process.argv);
 
 const dataVolumePath = utils.getDataVolumePath(commander.name);

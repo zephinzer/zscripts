@@ -9,11 +9,11 @@ const {service, DEFAULT_CONTAINER_NAME, DEFAULT_USER_ID} = utils.getServiceConfi
 commander
   .name('zsc-up-sonarqube')
   .description('provisions a sonarqube instance using docker')
-  .option('-Pui, --host-port-ui [host-port-ui]',  'specifies the host port for accessing sonarqube', service.port.ui)
-  .option('-Pdb, --host-port-db [host-port-db]',  'specifies the host port for accessing sonarqube\'s database', service.port.db)
-  .option('-l, --link [existing:in-app]', 'links containers to container being spun up', (c, x) => x.concat(c), [])
-  .option('-n, --name [name]',            `specifies the name of the container`, DEFAULT_CONTAINER_NAME)
-  .option('-U, --user-id [user-id]',      `specifies the user ID for the sonarqube instance`, DEFAULT_USER_ID)
+  .option('-Pdb, --host-port-db [host-port-db]', 'specifies the host port for accessing sonarqube\'s database', service.port.db)
+  .option('-P, --host-port [host-port]',         'specifies the host port for accessing sonarqube', service.port.ui)
+  .option('-l, --link [existing:in-app]',        'links containers to container being spun up', (c, x) => x.concat(c), [])
+  .option('-n, --name [name]',                   'specifies the name of the container', DEFAULT_CONTAINER_NAME)
+  .option('-U, --user-id [user-id]',             'specifies the user ID for the sonarqube instance', DEFAULT_USER_ID)
   .parse(process.argv);
 
 const dataVolumePath = utils.getDataVolumePath(commander.name);
@@ -23,7 +23,7 @@ command
   .image(service.image, service.tag)
   .flag('volume', `${dataVolumePath}/data:/opt/sonarqube/data:Z`)
   .flag('volume', `${dataVolumePath}/extensions:/opt/sonarqube/extensions:Z`)
-  .flag('publish', `${commander.hostPortUi}:${service.port.ui}`)
+  .flag('publish', `${commander.hostPort}:${service.port.ui}`)
   .flag('publish', `${commander.hostPortDb}:${service.port.db}`)
   .flag('name', commander.name)
   .flag('user', 0);

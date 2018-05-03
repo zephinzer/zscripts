@@ -11,8 +11,8 @@ commander
   .description('provisions a redis instance using docker')
   .option('-P, --host-port [host-port]',  'specifies the host port for accessing redis', service.port)
   .option('-l, --link [existing:in-app]', 'links containers to container being spun up', (c, x) => x.concat(c), [])
-  .option('-n, --name [name]',            `specifies the name of the container`, DEFAULT_CONTAINER_NAME)
-  .option('-U, --user-id [user-id]',      `specifies the user ID for the redis instance`, DEFAULT_USER_ID)
+  .option('-n, --name [name]',            'specifies the name of the container', DEFAULT_CONTAINER_NAME)
+  .option('-U, --user-id [user-id]',      'specifies the user ID for the redis instance', DEFAULT_USER_ID)
   .parse(process.argv);
 
 const dataVolumePath = utils.getDataVolumePath(commander.name);

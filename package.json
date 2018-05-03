@@ -6,7 +6,7 @@
     "zsc-npm": "./src/zsc-npm.js",
     "zsc-version": "./src/zsc-version.js"
   },
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "./src/zsc.js",
   "scripts": {

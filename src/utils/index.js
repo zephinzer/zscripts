@@ -96,6 +96,14 @@ utils.getServiceConfiguration = (serviceId) => {
   };
 };
 
+utils.handleCommand = (commander, command) => {
+  const commands = commander.commands.map((_command) => _command.name());
+  if (commands.indexOf(command) === -1) {
+    commander.help();
+    process.exit(0);
+  }
+};
+
 utils.provisionChildProcess = ({
   childProcessHandle,
   containerName,
