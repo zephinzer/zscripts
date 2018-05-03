@@ -7,6 +7,8 @@ const yaml = require('yamljs');
 const DockerCommand = require('./docker-command');
 
 const utils = {};
+const log = require('./logger');
+utils.log = log;
 
 module.exports = utils;
 
@@ -19,21 +21,21 @@ utils.clearDataVolume = (dataVolumePath, notRoot = false) => {
     } else {
       try {
         fs.unlinkSync(ff);
-      } catch (ex) { console.error(ex.message); }
+      } catch (ex) { log.error(ex.message); }
     }
   }
   try {
     fs.rmdirSync(dataVolumePath);
     if (notRoot === false) {
-      console.info(`${dataVolumePath} was cleared.`);
+      log.info(`${dataVolumePath} was cleared.`);
     }
   } catch (ex) {
-    console.error(ex.message);
+    log.error(ex.message);
     if (notRoot === false) {
       switch (ex.code) {
         case 'ENOTEMPTY':
-          console.warn('* you may need to manually run the following to remove the data:');
-          console.warn(`sudo rm -rf ${dataVolumePath}`);
+          log.warn('* you may need to manually run the following to remove the data:');
+          log.warn(`sudo rm -rf ${dataVolumePath}`);
           break;
       }
     }
@@ -44,12 +46,22 @@ utils.clearDataVolume = (dataVolumePath, notRoot = false) => {
 utils.createDataVolume = (dataVolumePath) => {
   try {
     fs.mkdirSync(dataVolumePath);
-    console.info(`${dataVolumePath} was created.`);
+    log.info(`${dataVolumePath} was created.`);
   } catch (ex) {
     switch (ex.code) {
-      case 'EEXIST': console.warn(`${dataVolumePath} already exists.`); break;
-      default: console.error(ex);
+      case 'EEXIST':
+        log.warn(`${dataVolumePath} already exists.`);
+        break;
+      default: log.error(ex);
     }
+  }
+};
+
+utils.createDirectoryIfNotExist = (directoryPath, directoryPurpose = '') => {
+  if (!fs.existsSync(directoryPath)) {
+    log.info(`provisioning ${directoryPurpose + ' '}directory at "${dataDirectory}"...`);
+    try { fs.mkdirSync(directoryPath); }
+    catch (ex) { log.error(ex.code); }
   }
 };
 
@@ -98,13 +110,13 @@ utils.provisionChildProcess = ({
     process.stderr.write(data);
   });
   childProcessHandle.on('exit', (exitCode) => {
-    console.info(`service exited with code ${exitCode || '0'}.`);
-    console.info(`removing container ${containerName}...`);
+    log.info(`service exited with code ${exitCode || '0'}.`);
+    log.info(`removing container ${containerName}...`);
     utils.createDockerCommand()
       .container(containerName)
       .removeContainer()
       .on('exit', () => {
-        console.info(`container ${containerName} was removed.`);
+        log.info(`container ${containerName} was removed.`);
         onExitHook(exitCode);
         process.exit(exitCode);
       });
@@ -116,26 +128,25 @@ utils.provisionGracefulContainerShutdown = ({
   beforeStopHook
 } = {}) => {
   let handled = false;
+  log.info('creating custom SIGINT handler...');
   process.on('SIGINT', () => {
-    console.info('received SIGINT - shutting down instance gracefully...');
     if (handled === false) {
+      log.info('received SIGINT - shutting down instance gracefully...');
       handled = true;
-      console.info(`stopping container ${containerName}...`);
+      log.info(`stopping container ${containerName}...`);
       if (typeof beforeStopHook === 'function') {
         beforeStopHook().then(() => {
           setTimeout(() => {
             utils.createDockerCommand().container(containerName).stop().on('exit', () => {
-              console.info(`container ${containerName} has stopped.`);
+              log.info(`container ${containerName} has stopped.`);
             });
           }, 5000);
         })
       } else {
         utils.createDockerCommand().container(containerName).stop().on('exit', () => {
-          console.info(`container ${containerName} has stopped.`);
+          log.info(`container ${containerName} has stopped.`);
         });
       }
-    } else {
-      console.info('already processing SIGINT - wait...');
     }
   });
 };

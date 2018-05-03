@@ -4,7 +4,7 @@
     "zsc": "./src/zsc.js",
     "zsc-up": "./src/zsc-up.js"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "./src/zsc.js",
   "scripts": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "case": "^1.5.4",
     "commander": "^2.15.1",
+    "pino": "^4.16.1",
     "semver": "^5.5.0",
     "yamljs": "^0.3.0"
   }

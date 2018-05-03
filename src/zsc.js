@@ -1,11 +1,17 @@
 #!/usr/bin/env node
 const commander = require('commander');
+const path = require('path');
+
+const utils = require('./utils');
+const {log} = utils;
 
 commander
-  .name('zscript')
-  .description('zscripts')
+  .name('zsc')
+  .description('zscripts - convenience scripts for easing development efforts')
   .command('up', 'provisions an instance of a service using docker')
-  .command('npm', 'npm related operations');
-
-commander
+  .command('npm', 'npm related operations')
+  .command('version', 'versioning related operations using git')
+  .action(() => {
+    utils.createDirectoryIfNotExist(path.join(`${process.env['HOME']}`, '/.zscripts'));
+  })
   .parse(process.argv);
