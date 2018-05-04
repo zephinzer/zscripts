@@ -7,6 +7,8 @@ const utils = require('./utils');
 commander
   .name('zsc version')
   .description('versioning related operations using git')
+  .command('current', 'retrieves the current version according to the git tags')
+  .alias('c')
   .command('init', 'initializes the versioning at 0.0.0')
   .alias('i')
   .command('bump', 'bumps the current version')

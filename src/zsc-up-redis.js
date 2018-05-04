@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 const commander = require('commander');
 const path = require('path');
 

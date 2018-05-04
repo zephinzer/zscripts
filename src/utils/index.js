@@ -2,13 +2,16 @@ const fs = require('fs');
 const path = require('path');
 
 const {kebab, snake} = require('case');
+const chalk = require('chalk');
 const yaml = require('yamljs');
 
 const DockerCommand = require('./docker-command');
 
 const utils = {};
 const log = require('./logger');
+const versioning = require('./versioning');
 utils.log = log;
+utils.versioning = versioning;
 
 module.exports = utils;
 
@@ -112,10 +115,10 @@ utils.provisionChildProcess = ({
 } = {}) => {
   utils.provisionGracefulContainerShutdown({containerName, beforeStopHook});
   childProcessHandle.stdout.on('data', (data) => {
-    process.stdout.write(data);
+    process.stdout.write(chalk.cyan(data.toString()));
   });
   childProcessHandle.stderr.on('data', (data) => {
-    process.stderr.write(data);
+    process.stderr.write(chalk.cyan(data.toString()));
   });
   childProcessHandle.on('exit', (exitCode) => {
     log.info(`service exited with code ${exitCode || '0'}.`);

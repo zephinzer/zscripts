@@ -11,6 +11,8 @@ commander
   .command('npm', 'npm related operations')
   .command('version', 'versioning related operations using git')
   .alias('v')
+  .command('publish', 'repository publishing related operations')
+  .alias('pub')
   .action(() => {
     utils.createDirectoryIfNotExist(path.join(`${process.env['HOME']}`, '/.zscripts'));
   })
