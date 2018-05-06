@@ -24,7 +24,9 @@ utils.clearDataVolume = (dataVolumePath, notRoot = false) => {
     } else {
       try {
         fs.unlinkSync(ff);
-      } catch (ex) { log.error(ex.message); }
+      } catch (ex) {
+        log.error(ex.message);
+      }
     }
   }
   try {
@@ -34,13 +36,9 @@ utils.clearDataVolume = (dataVolumePath, notRoot = false) => {
     }
   } catch (ex) {
     log.error(ex.message);
-    if (notRoot === false) {
-      switch (ex.code) {
-        case 'ENOTEMPTY':
-          log.warn('* you may need to manually run the following to remove the data:');
-          log.warn(`sudo rm -rf ${dataVolumePath}`);
-          break;
-      }
+    if (notRoot === false && ex.code === 'ENOTEMPTY') {
+      log.warn('* you may need to manually run the following to remove the data:');
+      log.warn(`sudo rm -rf ${dataVolumePath}`);
     }
   }
   
@@ -101,25 +99,28 @@ utils.getServiceConfiguration = (serviceId) => {
 
 utils.handleCommand = (commander, command) => {
   const commands = commander.commands.map((_command) => _command.name());
+  const aliases = commander.commands.map((_command) => _command.alias());
+  aliases.forEach((alias) => {
+    if (alias !== undefined) {
+      commands.push(alias);
+    }
+  });
   if (commands.indexOf(command) === -1) {
     commander.help();
     process.exit(0);
   }
 };
 
-utils.provisionChildProcess = ({
-  childProcessHandle,
-  containerName,
-  beforeStopHook,
-  onExitHook,
-} = {}) => {
-  utils.provisionGracefulContainerShutdown({containerName, beforeStopHook});
+utils.provisionChildProcessOutputStreams = (childProcessHandle) => {
   childProcessHandle.stdout.on('data', (data) => {
-    process.stdout.write(chalk.cyan(data.toString()));
+    process.stdout.write(chalk.green(data.toString()));
   });
   childProcessHandle.stderr.on('data', (data) => {
-    process.stderr.write(chalk.cyan(data.toString()));
+    process.stderr.write(chalk.red(data.toString()));
   });
+};
+
+utils.provisionChildProcessContainerCleanup = (containerName, onExitHook) => {
   childProcessHandle.on('exit', (exitCode) => {
     log.info(`service exited with code ${exitCode || '0'}.`);
     log.info(`removing container ${containerName}...`);
@@ -134,6 +135,17 @@ utils.provisionChildProcess = ({
   });
 };
 
+utils.provisionChildProcess = ({
+  childProcessHandle,
+  containerName,
+  beforeStopHook,
+  onExitHook,
+} = {}) => {
+  utils.provisionGracefulContainerShutdown({containerName, beforeStopHook});
+  utils.provisionChildProcessOutputStreams(childProcessHandle);
+  utils.provisionChildProcessContainerCleanup(containerName, onExitHook);
+};
+
 utils.provisionGracefulContainerShutdown = ({
   containerName,
   beforeStopHook
@@ -142,21 +154,15 @@ utils.provisionGracefulContainerShutdown = ({
   log.info('creating custom SIGINT handler...');
   process.on('SIGINT', () => {
     if (handled === false) {
-      log.info('received SIGINT - shutting down instance gracefully...');
       handled = true;
+      log.info('received SIGINT - shutting down instance gracefully...');
       log.info(`stopping container ${containerName}...`);
       if (typeof beforeStopHook === 'function') {
         beforeStopHook().then(() => {
-          setTimeout(() => {
-            utils.createDockerCommand().container(containerName).stop().on('exit', () => {
-              log.info(`container ${containerName} has stopped.`);
-            });
-          }, 5000);
+          utils.stopContainer(containerName);
         })
       } else {
-        utils.createDockerCommand().container(containerName).stop().on('exit', () => {
-          log.info(`container ${containerName} has stopped.`);
-        });
+        utils.stopContainer(containerName);
       }
     }
   });
@@ -164,4 +170,10 @@ utils.provisionGracefulContainerShutdown = ({
 
 utils.setIfString = (supposedValue, defaultValue = '') => {
   return (typeof supposedValue === 'string') ? supposedValue : defaultValue;
+};
+
+utils.stopContainer = (containerName) => {
+  utils.createDockerCommand().container(containerName).stop().on('exit', () => {
+    log.info(`container ${containerName} has stopped.`);
+  });
 };

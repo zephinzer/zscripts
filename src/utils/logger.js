@@ -12,13 +12,17 @@ const colours = {
 
 const prettyLogger = pino.pretty({
   forceColor: true,
-  levelFirst: true,
+  levelFirst: false,
 });
 prettyLogger.pipe(process.stdout);
 const logger = pino({
   name: 'zsc',
   safe: true,
   slowtime: false,
+  timestamp: false,
+  base: {
+    name: 'zsc'
+  }
 }, prettyLogger);
 
 module.exports = logger;

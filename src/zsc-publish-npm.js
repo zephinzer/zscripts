@@ -21,16 +21,24 @@ utils.versioning.list()
     const packageJsonPath = path.join(process.cwd(), '/package.json');
     const packageJson = require(packageJsonPath);
     const tmpPackageJson = Object.assign({...packageJson}, {version});
-    log.info(`setting version property of package.json to ${version}...`);
-    fs.writeFileSync(packageJsonPath, JSON.stringify(tmpPackageJson, null, 2));
-    const publisher = (commander.private === true) ?
-      exec('npm publish --access public')
-      : exec('npm publish');
-    publisher.stdout.on('data', (data) => { process.stdout.write(data); });
-    publisher.stderr.on('data', (data) => { process.stderr.write(data); });
-    publisher.on('exit', (exitCode) => {
-      log.info('restoring package.json...');
-      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-      process.exit(exitCode);
+    inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'confirmPublish',
+        message: `Publish ${packageJson.name}@${version} to NPM?`
+      }
+    ]).then((result) => {
+      if (result.confirmPublish) {
+        log.info(`setting version property of package.json to ${version}...`);
+        fs.writeFileSync(packageJsonPath, JSON.stringify(tmpPackageJson, null, 2));
+        const publisher = (commander.private === true) ?
+          exec('npm publish --access public') : exec('npm publish');
+        utils.provisionChildProcessOutputStreams(publisher);
+        publisher.on('exit', (exitCode) => {
+          log.info('restoring package.json...');
+          fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+          process.exit(exitCode);
+        });
+      }
     });
   });

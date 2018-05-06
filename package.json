@@ -4,9 +4,10 @@
     "zsc": "./src/zsc.js",
     "zsc-up": "./src/zsc-up.js",
     "zsc-npm": "./src/zsc-npm.js",
+    "zsc-publish": "./src/zsc-publish.js",
     "zsc-version": "./src/zsc-version.js"
   },
-  "version": "0.0.9",
+  "version": "0.0.0-zscmanaged.0",
   "description": "",
   "main": "./src/zsc.js",
   "scripts": {
