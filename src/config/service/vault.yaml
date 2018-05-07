@@ -1,0 +1,3 @@
+port: 8200
+image: vault
+tag: 0.10.1

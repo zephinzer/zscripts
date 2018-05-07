@@ -75,7 +75,7 @@ DockerCommand.prototype.removeContainer = function() {
   );
 };
 
-DockerCommand.prototype.run = function() {
+DockerCommand.prototype.run = function(command = '') {
   if (!this.imageId) {
     throw new Error('run() requires an image to be set (use .image(:name, :tag))');
   }
@@ -83,7 +83,7 @@ DockerCommand.prototype.run = function() {
   const {spawn} = require('child_process');
   return spawn(
     this.command,
-    ['run'].concat(this.args).concat(this.imageId),
+    ['run'].concat(this.args).concat(this.imageId, command),
     {detached: true}
   );
 };

@@ -12,6 +12,7 @@ commander
   .command('redis', 'starts a redis instance')
   .command('sonarqube', 'starts a sonarqube instance')
   .command('prometheus', 'starts a prometheus instance')
+  .command('vault', 'starts a vault instance')
   .action((command) => {
     utils.handleCommand(commander, command);
     utils.createDirectoryIfNotExist(path.join(`${process.env['HOME']}`, '/.zscripts/data'));
