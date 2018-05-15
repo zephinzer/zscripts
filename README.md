@@ -156,6 +156,10 @@ zsc version bump [...options]
 #### Version Current
 Outputs the current version according to the Git tags.
 
+##### `zsc version current` Options
+
+None.
+
 #### Version Next
 Outputs the next version according to the Git tags.
 
