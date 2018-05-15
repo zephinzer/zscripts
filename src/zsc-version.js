@@ -9,6 +9,8 @@ commander
   .description('versioning related operations using git')
   .command('current', 'retrieves the current version according to the git tags')
   .alias('c')
+  .command('next', 'retrieves the next version according to the git tags')
+  .alias('n')
   .command('init', 'initializes the versioning at 0.0.0')
   .alias('i')
   .command('bump', 'bumps the current version')
