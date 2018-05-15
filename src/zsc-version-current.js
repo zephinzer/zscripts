@@ -8,12 +8,19 @@ commander
   .description('retrieves the current version according to the git tags')
   .parse(process.argv);
 
-utils.versioning.list()
-  .then((tags) => {
-    log.info(tags[0])
-  })
-  .catch((error) => {
-    log.fatal(error);
-    log.error(`exiting with code ${error.exitCode}`);
-    process.exit(error.exitCode);
-  });
+if (
+  commander.rawArgs.indexOf('-h') !== -1
+  || commander.rawArgs.indexOf('--help') !== -1
+) {
+  commander.help();
+} else {
+  utils.versioning.list()
+    .then((tags) => {
+      process.stdout.write(tags[0]);
+    })
+    .catch((error) => {
+      log.fatal(error);
+      log.error(`exiting with code ${error.exitCode}`);
+      process.exit(error.exitCode);
+    });
+}
