@@ -60,7 +60,7 @@ utils.createDataVolume = (dataVolumePath) => {
 
 utils.createDirectoryIfNotExist = (directoryPath, directoryPurpose = '') => {
   if (!fs.existsSync(directoryPath)) {
-    log.info(`provisioning ${directoryPurpose + ' '}directory at "${dataDirectory}"...`);
+    log.info(`provisioning ${directoryPurpose + ' '}directory at "${directoryPath}"...`);
     try { fs.mkdirSync(directoryPath); }
     catch (ex) { log.error(ex.code); }
   }
