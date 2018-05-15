@@ -153,7 +153,33 @@ zsc version bump [...options]
 
 `-M, --major`: Performs a major version bump
 
+#### Version Current
+Outputs the current version according to the Git tags.
 
+#### Version Next
+Outputs the next version according to the Git tags.
+
+##### `zsc version next` Options
+
+`-a, --alpha`: Does an alpha release (applicable only for pre-release version bumps)
+
+`-b, --beta`: Does a beta release (applicable only for pre-release version bumps)
+
+`-c, --release-candidate`: Does a release candidate release (applicable only for pre-release version bumps)
+
+`-r, --pre-release`: Performs a pre-release version bump
+
+`-o, --pre-patch [pre-patch-id]`: Performs a pre-patch version bump
+
+`-p, --patch`: Performs a patch version bump
+
+`-l, --pre-minor [pre-minor-id]`: Performs a pre-minor version bump
+
+`-m, --minor`: Performs a minor version bump
+
+`-L, --pre-major [pre-major-id]`: Performs a pre-major version bump
+
+`-M, --major`: Performs a major version bump
 
 #### Version Init
 Initialises version for the Git repository at `0.0.0`. Run this from inside any Git repository.
