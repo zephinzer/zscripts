@@ -21,6 +21,7 @@ zsc [command] [options]
 
 ## Commands
 - [`npm`](#npm-command)
+- [`publish`](#publish-command)
 - [`up`](#up-command)
 - [`version'](#verison-command)
 
@@ -41,6 +42,17 @@ zsc npm version|v [...options]
 `-M, --major`: Updates the major version
 
 > If no options are specified, defaults to patch.
+
+### Publish Command
+
+#### NPM
+Publishes the current repository to NPM, using the Git tags' semantic versioning tags as the version in the `package.json`.
+
+##### `zsc publish npm` Options
+
+`-p, --private`: Sets the flag to release the package as private
+
+`-y, --auto`: Publishes the package without confirmation
 
 ### Up Command
 
