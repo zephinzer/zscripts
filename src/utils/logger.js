@@ -11,7 +11,7 @@ const colours = {
 };
 
 const prettyLogger = pino.pretty({
-  forceColor: true,
+  forceColor: false,
   levelFirst: false,
 });
 prettyLogger.pipe(process.stdout);
