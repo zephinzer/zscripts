@@ -111,6 +111,17 @@ utils.handleCommand = (commander, command) => {
   }
 };
 
+utils.printHelpIfRequired = (commanderInstance, callback) => {
+  if (
+    commanderInstance.rawArgs.indexOf('-h') !== -1
+    || commanderInstance.rawArgs.indexOf('--help') !== -1
+  ) {
+    commanderInstance.help();
+  } else {
+    callback();
+  }
+};
+
 utils.provisionChildProcessOutputStreams = (childProcessHandle) => {
   childProcessHandle.stdout.on('data', (data) => {
     process.stdout.write(chalk.green(data.toString()));

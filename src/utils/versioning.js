@@ -97,3 +97,16 @@ versioning.next = ({
   }
   return nextVersion;
 };
+
+versioning.applyOptions = (commanderInstance) =>
+  commanderInstance
+  .option('-a, --alpha', 'does an alpha release (applicable only for pre-release version bumps)')
+  .option('-b, --beta', 'does a beta release (applicable only for pre-release version bumps)')
+  .option('-c, --release-candidate', 'does a release candidate release (applicable only for pre-release version bumps)')
+  .option('-r, --pre-release', 'performs a pre-release version bump')
+  .option('-o, --pre-patch [pre-patch-id]', 'performs a pre-patch version bump')
+  .option('-p, --patch', 'performs a patch version bump')
+  .option('-l, --pre-minor [pre-minor-id]', 'performs a pre-minor version bump')
+  .option('-m, --minor', 'performs a minor version bump')
+  .option('-L, --pre-major [pre-major-id]', 'performs a pre-major version bump')
+  .option('-M, --major', 'performs a major version bump');
