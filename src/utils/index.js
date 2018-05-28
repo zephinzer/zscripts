@@ -131,7 +131,11 @@ utils.provisionChildProcessOutputStreams = (childProcessHandle) => {
   });
 };
 
-utils.provisionChildProcessContainerCleanup = (containerName, onExitHook) => {
+utils.provisionChildProcessContainerCleanup = ({
+  childProcessHandle,
+  containerName,
+  onExitHook
+}) => {
   childProcessHandle.on('exit', (exitCode) => {
     log.info(`service exited with code ${exitCode || '0'}.`);
     log.info(`removing container ${containerName}...`);
@@ -154,7 +158,11 @@ utils.provisionChildProcess = ({
 } = {}) => {
   utils.provisionGracefulContainerShutdown({containerName, beforeStopHook});
   utils.provisionChildProcessOutputStreams(childProcessHandle);
-  utils.provisionChildProcessContainerCleanup(containerName, onExitHook);
+  utils.provisionChildProcessContainerCleanup({
+    childProcessHandle,
+    containerName,
+    onExitHook
+  });
 };
 
 utils.provisionGracefulContainerShutdown = ({

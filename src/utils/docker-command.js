@@ -79,11 +79,15 @@ DockerCommand.prototype.run = function(command = '') {
   if (!this.imageId) {
     throw new Error('run() requires an image to be set (use .image(:name, :tag))');
   }
-  console.log(this.toString());
+  const commandArguments = ['run'].concat(this.args).concat(this.imageId);
+  if (command) {
+    commandArguments.push(command);
+  }
+  console.log(this.command + commandArguments.reduce((p, c) => p += ` ${c}`, ''));
   const {spawn} = require('child_process');
   return spawn(
     this.command,
-    ['run'].concat(this.args).concat(this.imageId, command),
+    commandArguments,
     {detached: true}
   );
 };
